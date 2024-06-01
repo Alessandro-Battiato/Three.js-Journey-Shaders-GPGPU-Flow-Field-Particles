@@ -4,6 +4,7 @@ uniform sampler2D uParticlesTexture;
 
 attribute vec2 aParticlesUv;
 attribute vec3 aColor;
+attribute float size;
 
 varying vec3 vColor;
 
@@ -18,7 +19,7 @@ void main()
     gl_Position = projectedPosition;
 
     // Point size
-    gl_PointSize = uSize * uResolution.y;
+    gl_PointSize = uSize * uSize * uResolution.y;
     gl_PointSize *= (1.0 / - viewPosition.z);
 
     // Varyings
