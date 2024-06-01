@@ -181,6 +181,10 @@ particles.geometry.setAttribute(
     "aParticlesUv",
     new THREE.BufferAttribute(particlesUvArray, 2)
 );
+particles.geometry.setAttribute(
+    "aColor",
+    baseGeometry.instance.attributes.color
+);
 
 // Material
 particles.material = new THREE.ShaderMaterial({
