@@ -89,10 +89,15 @@ debugObject.clearColor = "#29191f";
 renderer.setClearColor(debugObject.clearColor);
 
 /**
+ * Load model
+ */
+const gltf = await gltfLoader.loadAsync("./model.glb"); // not recommended, if models are heavier than this the user will see a blank screen because of the await and they will leave the page, prefer normal callbacks
+
+/**
  * Base geometry
  */
 const baseGeometry = {};
-baseGeometry.instance = new THREE.SphereGeometry(3);
+baseGeometry.instance = gltf.scene.children[0].geometry;
 baseGeometry.count = baseGeometry.instance.attributes.position.count;
 
 /**
@@ -182,7 +187,7 @@ particles.material = new THREE.ShaderMaterial({
     vertexShader: particlesVertexShader,
     fragmentShader: particlesFragmentShader,
     uniforms: {
-        uSize: new THREE.Uniform(0.4),
+        uSize: new THREE.Uniform(0.07),
         uResolution: new THREE.Uniform(
             new THREE.Vector2(
                 sizes.width * sizes.pixelRatio,
