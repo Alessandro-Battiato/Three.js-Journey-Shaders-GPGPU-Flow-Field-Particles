@@ -208,7 +208,7 @@ particles.material = new THREE.ShaderMaterial({
     vertexShader: particlesVertexShader,
     fragmentShader: particlesFragmentShader,
     uniforms: {
-        uSize: new THREE.Uniform(0.2),
+        uSize: new THREE.Uniform(0.1),
         uResolution: new THREE.Uniform(
             new THREE.Vector2(
                 sizes.width * sizes.pixelRatio,
