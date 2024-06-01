@@ -2,6 +2,7 @@
 uniform float uTime;
 uniform float uDeltaTime;
 uniform sampler2D uBase;
+uniform float uFlowFieldInfluence;
 
 #include ../includes/simplexNoise4d.glsl
 
@@ -17,7 +18,8 @@ void main() {
     } else {
         // Flow field strength
         float strength = simplexNoise4d(vec4(base.xyz * 0.2, time + 1.0));
-        strength = smoothstep(0.0, 1.0, strength); // the 0.0 as first parameter fixes the chaos even more as some particles do not move while others do
+        float influence = (uFlowFieldInfluence - 0.5) * (- 2.0);
+        strength = smoothstep(influence, 1.0, strength);
 
         // Flow field (alive particles)
         vec3 flowField = vec3(
