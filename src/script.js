@@ -141,6 +141,9 @@ gpgpu.computation.setVariableDependencies(gpgpu.particlesVariable, [
 
 // Uniforms
 gpgpu.particlesVariable.material.uniforms.uTime = new THREE.Uniform(0);
+gpgpu.particlesVariable.material.uniforms.uBase = new THREE.Uniform(
+    baseParticlesTexture
+);
 
 // Init
 gpgpu.computation.init();
@@ -202,7 +205,7 @@ particles.material = new THREE.ShaderMaterial({
     vertexShader: particlesVertexShader,
     fragmentShader: particlesFragmentShader,
     uniforms: {
-        uSize: new THREE.Uniform(0.07),
+        uSize: new THREE.Uniform(0.2),
         uResolution: new THREE.Uniform(
             new THREE.Vector2(
                 sizes.width * sizes.pixelRatio,
