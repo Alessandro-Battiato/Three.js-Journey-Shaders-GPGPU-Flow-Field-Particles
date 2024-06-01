@@ -141,6 +141,7 @@ gpgpu.computation.setVariableDependencies(gpgpu.particlesVariable, [
 
 // Uniforms
 gpgpu.particlesVariable.material.uniforms.uTime = new THREE.Uniform(0);
+gpgpu.particlesVariable.material.uniforms.uDeltaTime = new THREE.Uniform(0); // Don't ever send Delta time with a value of 0 unless (like in this case) you're going to change the value immediately
 gpgpu.particlesVariable.material.uniforms.uBase = new THREE.Uniform(
     baseParticlesTexture
 );
@@ -248,6 +249,7 @@ const tick = () => {
 
     // GPGPU Update
     gpgpu.particlesVariable.material.uniforms.uTime.value = elapsedTime;
+    gpgpu.particlesVariable.material.uniforms.uDeltaTime.value = deltaTime;
     gpgpu.computation.compute();
     particles.material.uniforms.uParticlesTexture.value =
         gpgpu.computation.getCurrentRenderTarget(

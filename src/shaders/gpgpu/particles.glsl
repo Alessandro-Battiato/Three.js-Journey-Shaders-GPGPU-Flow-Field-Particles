@@ -1,5 +1,6 @@
 // We are going to handle the flow field here
 uniform float uTime;
+uniform float uDeltaTime;
 uniform sampler2D uBase;
 
 #include ../includes/simplexNoise4d.glsl
@@ -21,10 +22,10 @@ void main() {
             simplexNoise4d(vec4(particle.xyz + 2.0, uTime)) // z
         ); // the direction towards which the particles should move
         flowField = normalize(flowField); // being a direction, directions need to be normalized
-        particle.xyz += flowField * 0.01; // we "nerf" the flow field by multiplying it
+        particle.xyz += flowField * uDeltaTime * 0.5; // we "nerf" the flow field by multiplying it
 
         // Decay
-        particle.a += 0.01;
+        particle.a += uDeltaTime * 0.3;
     }
 
     gl_FragColor = particle;
