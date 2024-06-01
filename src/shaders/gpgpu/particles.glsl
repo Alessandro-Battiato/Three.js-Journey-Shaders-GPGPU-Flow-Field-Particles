@@ -12,9 +12,13 @@ void main() {
     vec4 base = texture(uBase, uv);
 
     if (particle.a >= 1.0) {
-        particle.a = mod(particle.a, 1.0); // if it's more than 1.0 then the particle is dead
+        particle.a = mod(particle.a, 1.0); // if it's more than 1.0 then the particle is dead, also modulo fixes browsers's induced bug of stopping the tick function once you change tab
         particle.xyz = base.xyz;
     } else {
+        // Flow field strength
+        float strength = simplexNoise4d(vec4(base.xyz, time + 1.0));
+        strength = smoothstep(-1.0, 1.0, strength);
+
         // Flow field (alive particles)
         vec3 flowField = vec3(
             simplexNoise4d(vec4(particle.xyz + 0.0, uTime)), // x
@@ -22,7 +26,7 @@ void main() {
             simplexNoise4d(vec4(particle.xyz + 2.0, uTime)) // z
         ); // the direction towards which the particles should move
         flowField = normalize(flowField); // being a direction, directions need to be normalized
-        particle.xyz += flowField * uDeltaTime * 0.5; // we "nerf" the flow field by multiplying it
+        particle.xyz += flowField * uDeltaTime * strength * 0.5; // we "nerf" the flow field by multiplying it
 
         // Decay
         particle.a += uDeltaTime * 0.3;
