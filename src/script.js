@@ -110,6 +110,20 @@ gpgpu.computation = new GPUComputationRenderer(
 // Base particles
 const baseParticlesTexture = gpgpu.computation.createTexture();
 
+for (let i = 0; i < baseGeometry.count; i++) {
+    const i3 = i * 3;
+    const i4 = i * 4; // this is RGBA that's why 4 instead of 3
+
+    // Position based on geometry
+    baseParticlesTexture.image.data[i4 + 0] = // r channel
+        baseGeometry.instance.attributes.position.array[i3 + 0];
+    baseParticlesTexture.image.data[i4 + 1] = // g channel
+        baseGeometry.instance.attributes.position.array[i3 + 1];
+    baseParticlesTexture.image.data[i4 + 2] = // b channel
+        baseGeometry.instance.attributes.position.array[i3 + 2];
+    baseParticlesTexture.image.data[i4 + 3] = 0; // a channel
+}
+
 // Particles variable
 gpgpu.particlesVariable = gpgpu.computation.addVariable(
     "uParticles", // we will have access to this variable using this name inside the particles.glsl of gpgpu folder
