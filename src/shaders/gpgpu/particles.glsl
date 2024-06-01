@@ -12,7 +12,7 @@ void main() {
     vec4 base = texture(uBase, uv);
 
     if (particle.a >= 1.0) {
-        particle.a = 0.0; // if it's more than 1.0 then the particle is dead
+        particle.a = mod(particle.a, 1.0); // if it's more than 1.0 then the particle is dead
         particle.xyz = base.xyz;
     } else {
         // Flow field (alive particles)
