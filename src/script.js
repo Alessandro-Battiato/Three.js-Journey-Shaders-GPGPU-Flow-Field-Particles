@@ -126,7 +126,7 @@ for (let i = 0; i < baseGeometry.count; i++) {
         baseGeometry.instance.attributes.position.array[i3 + 1];
     baseParticlesTexture.image.data[i4 + 2] = // b channel
         baseGeometry.instance.attributes.position.array[i3 + 2];
-    baseParticlesTexture.image.data[i4 + 3] = 0; // a channel
+    baseParticlesTexture.image.data[i4 + 3] = Math.random(); // a channel
 }
 
 // Particles variable
