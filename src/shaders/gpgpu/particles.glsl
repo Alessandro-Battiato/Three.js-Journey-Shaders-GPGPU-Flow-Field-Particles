@@ -16,8 +16,8 @@ void main() {
         particle.xyz = base.xyz;
     } else {
         // Flow field strength
-        float strength = simplexNoise4d(vec4(base.xyz, time + 1.0));
-        strength = smoothstep(-1.0, 1.0, strength);
+        float strength = simplexNoise4d(vec4(base.xyz * 0.2, time + 1.0));
+        strength = smoothstep(0.0, 1.0, strength); // the 0.0 as first parameter fixes the chaos even more as some particles do not move while others do
 
         // Flow field (alive particles)
         vec3 flowField = vec3(
