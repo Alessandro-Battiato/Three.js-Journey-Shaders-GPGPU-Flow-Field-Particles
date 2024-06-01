@@ -3,6 +3,7 @@ uniform float uTime;
 uniform float uDeltaTime;
 uniform sampler2D uBase;
 uniform float uFlowFieldInfluence;
+uniform float uFlowFieldStrength;
 
 #include ../includes/simplexNoise4d.glsl
 
@@ -28,7 +29,7 @@ void main() {
             simplexNoise4d(vec4(particle.xyz + 2.0, uTime)) // z
         ); // the direction towards which the particles should move
         flowField = normalize(flowField); // being a direction, directions need to be normalized
-        particle.xyz += flowField * uDeltaTime * strength * 0.5; // we "nerf" the flow field by multiplying it
+        particle.xyz += flowField * uDeltaTime * strength * uFlowFieldStrength; // we "nerf" the flow field by multiplying it
 
         // Decay
         particle.a += uDeltaTime * 0.3;
