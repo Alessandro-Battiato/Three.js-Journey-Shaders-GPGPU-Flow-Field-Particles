@@ -6,6 +6,7 @@ import { GPUComputationRenderer } from "three/examples/jsm/Addons.js";
 import GUI from "lil-gui";
 import particlesVertexShader from "./shaders/particles/vertex.glsl";
 import particlesFragmentShader from "./shaders/particles/fragment.glsl";
+import gpgpuParticlesShader from "./shaders/gpgpu/particles.glsl";
 
 /**
  * Base
@@ -109,6 +110,30 @@ gpgpu.computation = new GPUComputationRenderer(
 // Base particles
 const baseParticlesTexture = gpgpu.computation.createTexture();
 
+// Particles variable
+gpgpu.particlesVariable = gpgpu.computation.addVariable(
+    "uParticles", // we will have access to this variable using this name inside the particles.glsl of gpgpu folder
+    gpgpuParticlesShader,
+    baseParticlesTexture
+);
+gpgpu.computation.setVariableDependencies(gpgpu.particlesVariable, [
+    gpgpu.particlesVariable,
+]); // we update this particle first and it sends itself as a dependency, even though you could pass more particles
+
+// Init
+gpgpu.computation.init();
+
+// Debug
+gpgpu.debug = new THREE.Mesh(
+    new THREE.PlaneGeometry(3, 3),
+    new THREE.MeshBasicMaterial({
+        map: gpgpu.computation.getCurrentRenderTarget(gpgpu.particlesVariable)
+            .texture,
+    })
+);
+gpgpu.debug.position.x = 3;
+scene.add(gpgpu.debug); // this is just for debugging
+
 /**
  * Particles
  */
@@ -158,6 +183,9 @@ const tick = () => {
 
     // Update controls
     controls.update();
+
+    // GPGPU Update
+    gpgpu.computation.compute();
 
     // Render normal scene
     renderer.render(scene, camera);
